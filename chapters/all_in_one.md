@@ -4,7 +4,7 @@
 
 This tutorial guides you through building your own neural search app using the [Jina framework](https://github.com/jina-ai/jina/). Don't worry if you're new to machine learning or search. We'll spell it all out right here.
 
-![](../images/jinabox-southpark.gif)
+![](./images/jinabox-southpark.gif)
 
 Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from South Park that match most closely.
 
