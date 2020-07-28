@@ -29,13 +29,13 @@ Note: You'll need to run the Docker image before trying the steps below
 
 #### Query with Jinabox
 
-[Jinabox](https://github.com/jina-ai/jinabox.js/) is a simple web-based front-end for neural search.
-
-![](./images/jinabox-southpark.gif)
+[Jinabox](https://github.com/jina-ai/jinabox.js/) is a simple web-based front-end for neural search. You can see it in the graphic at the top of this tutorial.
 
 1. Go to [jinabox](https://jina.ai/jinabox.js) in your browser
 2. Ensure you have the server endpoint set to `http://localhost:45678/api/search`
 3. Type a phrase into the search bar and see which South Park lines come up
+
+**Note:** If it times out the first time, that's because the query system is still warming up. Try again in a few seconds!
 
 #### Query with `curl`
 
@@ -186,16 +186,20 @@ curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:hey, dude
 }
 ```
 
+Now go back to your terminal and hit `Ctrl-C` (or `Command-C` on Mac) a few times to ensure you've stopped Docker.
+
 </details>
 
 ## 🐍 Install
+
+Now that you know what we're building, let's get started!
 
 ### Prerequisites
 
 You'll need:
 
-* Basic knowledge of Python
-* Python 3.7 or higher installed, and pip
+* A basic knowledge of Python
+* Python 3.7 or higher installed, and `pip`
 * A Mac or Linux computer (we don't currently support Windows)
 * 8 gigabytes or more of RAM
 * Plenty of time - Indexing can take a while!
@@ -221,12 +225,13 @@ We use [cookiecutter](https://github.com/cookiecutter/cookiecutter) to spin up a
 
 For our South Park example, we recommend the following settings:
 
-* Project name: `South Park`
-* Project slug: `south_park`
-* Task type: `nlp`
-* Index type: `strings`
+* `project_name`: `South Park`
+* `project_slug`: `south_park` (default value)
+* `task_type`: `nlp`
+* `index_type`: `strings`
+* `public_port`: `65481` (default value)
 
-All other fields you can just fill in however you please.
+All other fields you can fill in however you please.
 
 ## 📂 Files and Folders
 
