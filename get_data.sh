@@ -1,5 +1,5 @@
 #!/bin/sh
-TEST_WORKDIR=./south_park/data/
-mkdir -p ${TEST_WORKDIR}
-git clone https://github.com/BobAdamsEE/SouthParkData.git $TEST_WORKDIR
+WORKDIR=./south_park/data/
+mkdir -p ${WORKDIR}
+git clone https://github.com/alexcg1/startrek-character-lines.git $WORKDIR
 python prepare_data.py

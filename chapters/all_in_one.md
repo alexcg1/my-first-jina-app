@@ -4,11 +4,9 @@
 
 This tutorial guides you through building your own neural search app using the [Jina framework](https://github.com/jina-ai/jina/). Don't worry if you're new to machine learning or search. We'll spell it all out right here.
 
-**Warning:** If you don't like South Park or its general use of language, turn back now! While we don't swear in this tutorial, the dataset contains naughty words that might pop during your search.
+![](./images/jinabox-startrek.gif)
 
-![](./images/jinabox-southpark.gif)
-
-Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from South Park that match most closely.
+Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from Star Trek that match most closely.
 
 ⚠️ Need help? Check out the **[troubleshooting](#troubleshooting)** section further along.
 
@@ -24,8 +22,9 @@ Before going through the trouble of downloading, configuring and testing your ap
 
 Jina has a pre-built Docker image with indexed data. You can run it with:
 
+XXX Damn, no docker image for Star Trek
 ```bash
-docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark
+docker run -p 45678:45678 jinaai/hub.app.distilbert-startrek
 ```
 Note: You'll need to run the Docker image before trying the steps below
 
@@ -35,7 +34,7 @@ Note: You'll need to run the Docker image before trying the steps below
 
 1. Go to [jinabox](https://jina.ai/jinabox.js) in your browser
 2. Ensure you have the server endpoint set to `http://localhost:45678/api/search`
-3. Type a phrase into the search bar and see which South Park lines come up
+3. Type a phrase into the search bar and see which Star Trek lines come up
 
 **Note:** If it times out the first time, that's because the query system is still warming up. Try again in a few seconds!
 
@@ -225,10 +224,10 @@ pip install -U cookiecutter && cookiecutter gh:jina-ai/cookiecutter-jina
 
 We use [cookiecutter](https://github.com/cookiecutter/cookiecutter) to spin up a basic Jina app and save you having to do a lot of typing and setup. 
 
-For our South Park example, we recommend the following settings:
+For our Star Trek example, we recommend the following settings:
 
-* `project_name`: `South Park`
-* `project_slug`: `south_park` (default value)
+* `project_name`: `Star Trek`
+* `project_slug`: `star_trek` (default value)
 * `task_type`: `nlp`
 * `index_type`: `strings`
 * `public_port`: `65481` (default value)
@@ -240,11 +239,11 @@ All other fields you can fill in however you please.
 After running `cookiecutter`, run:
 
 ```
-cd south_park
+cd star_trek
 ls
 ```
 
-You should see a bunch of files in the `south_park` folder that cookiecutter created:
+You should see a bunch of files in the `star_trek` folder that cookiecutter created:
 
 | File               | What it Does                                                             |
 | ---                | ---                                                                      |
@@ -271,7 +270,7 @@ pip install -r requirements.txt
 
 ## Prepare the Data
 
-Our goal is to find out who said what in South Park episodes when a user queries a phrase. The [SouthPark dataset](https://github.com/BobAdamsEE/SouthParkData/) contains the characters and lines from seasons 1 to 19. Many thanks to [BobAdamsEE](https://github.com/BobAdamsEE) for sharing this awesome resource!👏
+Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [SouthPark dataset](https://github.com/BobAdamsEE/SouthParkData/) contains the characters and lines from seasons 1 to 19. Many thanks to [BobAdamsEE](https://github.com/BobAdamsEE) for sharing this awesome resource!👏
 
 Now let's ensure we're back in our base folder and download and process this dataset by running:
 
@@ -284,7 +283,7 @@ bash ./get_data.sh
   <summary>See console output</summary>
 
 ```bash
-Cloning into './south_park/data'...
+Cloning into './star_trek/data'...
 remote: Enumerating objects: 3852, done.
 remote: Total 3852 (delta 0), reused 0 (delta 0), pack-reused 3852
 Receiving objects: 100% (3852/3852), 5.11 MiB | 2.37 MiB/s, done.
@@ -295,10 +294,10 @@ Resolving deltas: 100% (40/40), done.
 
 ## Load the Data
 
-Now that `get_data.sh` has downloaded the data (and called `process_data.py` to process it), let's get back into the `south_park` directory:
+Now that `get_data.sh` has downloaded the data (and called `process_data.py` to process it), let's get back into the `star_trek` directory:
 
 ```
-cd south_park
+cd star_trek
 ```
 
 Now we've got the file `character-lines.csv` in the `data` directory, which  we need to pass into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
@@ -337,7 +336,7 @@ Looking at `app.py`, in the `index` function, we currently have:
         f.index_lines(['abc', 'cde', 'efg'], batch_size=64, read_mode='r', size=num_docs)
 ```
 
-As you can see, this indexes just 3 strings. Let's load up our South Park file instead with the `filepath` parameter:
+As you can see, this indexes just 3 strings. Let's load up our Star Trek file instead with the `filepath` parameter:
 
 ```python
     with f:
@@ -443,11 +442,11 @@ Now that the app is running in search mode, we can search from the web browser w
 
 #### Jinabox
 
-![](./images/jinabox-southpark.gif)
+![](./images/jinabox-startrek.gif)
  
 1. Go to [jinabox](https://jina.ai/jinabox.js) in your browser
 2. Ensure you have the server endpoint set to `http://localhost:65481/api/search`
-3. Type a phrase into the search bar and see which South Park lines come up
+3. Type a phrase into the search bar and see which Star Trek lines come up
 
 #### Curl
 
@@ -835,4 +834,4 @@ In this tutorial you've learned:
 * How to query data with `curl` and Jinabox
 * The nitty-gritty behind Jina Flows and Pods
 
-Now that you have a broad understanding of how things work, you can try out some of more [example tutorials](https://github.com/jina-ai/examples) to build image or video search, or stay tuned for our next set of tutorials that build upon your South Park app.
+Now that you have a broad understanding of how things work, you can try out some of more [example tutorials](https://github.com/jina-ai/examples) to build image or video search, or stay tuned for our next set of tutorials that build upon your Star Trek app.

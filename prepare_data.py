@@ -1,46 +1,32 @@
-__copyright__ = "Copyright (c) 2020 Jina AI Limited. All rights reserved."
-__license__ = "Apache-2.0"
+import json
 
+series = 'TNG'
+input_file = 'all_series_lines.json'
+output_file = 'startrek_tng.csv'
 
-import csv
-import os
-import re
+with open(input_file, 'r') as file:
+    data = json.load(file)
 
+# print(data[series])
 
-def read_data(data_fn, output_fn):
-    _min_sent_len = 3
-    _max_sent_len = 64
-    punct_chars = ['!', '.', '?', '։', '؟', '۔', '܀', '܁', '܂', '‼', '‽', '⁇', '⁈', '⁉', '⸮', '﹖', '﹗',
-                   '！', '．', '？', '｡', '。']
-    _slit_pat = re.compile('([{0}])+([^{0}])'.format(''.join(punct_chars)))
-    _replace_pat = re.compile('{}'.format(punct_chars))
+print(f"Processing series {series}")
 
-    if not os.path.exists(data_fn):
-        print('file not found: {}'.format(data_fn))
-    doc_list = []
-    character_set = set()
-    with open(data_fn, 'r') as f:
-        f_h = csv.reader(f)
-        for _idx, l in enumerate(f_h):
-            if _idx == 0:
-                continue
-            _, _, name, line = l
-            line = line.strip('"')
-            sents_str = _slit_pat.sub(r'\1\n\2', '{}\n'.format(line))
-            sents_str = sents_str.rstrip('\n')
-            sents = [s.strip() for s in sents_str.split('\n') if _min_sent_len <= len(s.strip()) <= _max_sent_len]
-            character_set.add(name)
-            name = _replace_pat.sub(r'', name)
-            for s in sents:
-                doc_list.append('{}! {}'.format(name, s))
-    doc_list = list(frozenset(doc_list))
-    print('num characters: {}'.format(len(character_set)))
-    print('documents: {}'.format(len(doc_list)))
-    with open(output_fn, 'w') as f:
-        f.write('\n'.join(doc_list))
+data = data[series]
+all_lines = []
+separator = '!'
 
+for episode in data:
+    this_ep = data[episode]
+    for key, values in this_ep.items():
+        if len(values) > 0:
+            for value in values:
+                line = (f"{key}{separator}{value}")
+                all_lines.append(line)
 
-if __name__ == '__main__':
-    data_dir = 'south_park/data/'
-    read_data(
-        os.path.join(data_dir, 'All-seasons.csv'), os.path.join(data_dir, 'character-lines.csv'))
+print(f"Writing to {output_file}")
+with open(output_file, 'w') as file:
+    for line in all_lines:
+        file.write(line)
+        file.write('\n')
+
+print("Done")
