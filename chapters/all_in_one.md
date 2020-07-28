@@ -4,11 +4,11 @@
 
 This tutorial guides you through building your own neural search app using the [Jina framework](https://github.com/jina-ai/jina/). Don't worry if you're new to machine learning or search. We'll spell it all out right here.
 
-![](./chapters/images/jinabox-southpark.gif)
+![](../images/jinabox-southpark.gif)
 
 Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from South Park that match most closely.
 
-⚠️ Need help? Check out the [troubleshooting section].
+⚠️ Need help? Check out the **troubleshooting** section further along.
 
 ## 🗝️ Key Concepts
 
@@ -207,8 +207,8 @@ You should have also read the key concepts at the top of this page to get a good
 Let's get the basic files we need to get moving:
 
 ```
-git clone XXX/tutorial
-cd tutorial
+git clone git@github.com:alexcg1/my-first-jina-app.git
+cd my-first-jina-app
 ```
 
 ### Cookiecutter
