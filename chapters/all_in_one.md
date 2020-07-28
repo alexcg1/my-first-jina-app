@@ -4,6 +4,8 @@
 
 This tutorial guides you through building your own neural search app using the [Jina framework](https://github.com/jina-ai/jina/). Don't worry if you're new to machine learning or search. We'll spell it all out right here.
 
+**Warning:** If you don't like South Park or its general use of language, turn back now! While we don't swear in this tutorial, the dataset contains naughty words that might pop during your search.
+
 ![](./images/jinabox-southpark.gif)
 
 Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from South Park that match most closely.
@@ -235,7 +237,14 @@ All other fields you can fill in however you please.
 
 ## 📂 Files and Folders
 
-After running `cookiecutter`, you should see a bunch of files in the `south_park` folder:
+After running `cookiecutter`, run:
+
+```
+cd south_park
+ls
+```
+
+You should see a bunch of files in the `south_park` folder that cookiecutter created:
 
 | File               | What it Does                                                             |
 | ---                | ---                                                                      |
@@ -243,7 +252,7 @@ After running `cookiecutter`, you should see a bunch of files in the `south_park
 | `Dockerfile`       | Lets you spin up a Docker instance running your app                      |
 | `flows/`           | Folder to hold your Flows                                                |
 | `pods/`            | Folder to hold your Pods                                                 |
-| `README`           | The index to this tutorial                                               |
+| `README.md`        | An auto-generated README file                                            |
 | `requirements.txt` | A list of requirements for `pip`                                         |
 
 In the `flows/` folder we can see `index.yml` and `query.yml` - these define the indexing and querying Flows for your app.
@@ -255,7 +264,6 @@ In `pods/` we see `chunk.yml`, `craft.yml`, `doc.yml`, and `encode.yml` - these 
 In your terminal:
 
 ```
-cd south_park
 pip install -r requirements.txt
 ```
 
@@ -287,7 +295,13 @@ Resolving deltas: 100% (40/40), done.
 
 ## Load the Data
 
-Now that `get_data.sh` has downloaded the data (and called `process_data.py` to process it), we've got `character-lines.csv`. We need to pass this file into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
+Now that `get_data.sh` has downloaded the data (and called `process_data.py` to process it), let's get back into the `south_park` directory:
+
+```
+cd south_park
+```
+
+Now we've got the file `character-lines.csv` in the `data` directory, which  we need to pass into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
 
 ### Check the Data
 
@@ -297,7 +311,7 @@ Let's just make sure the file has everything we want:
 head data/character-lines.csv
 ```
 
-You should see output like:
+You should see output consisting of characters (like `Stan`), a separator, (`!`), and the lines spoken by the character (`I don't wanna talk about it`...):
 
 ```csv
 Stan! I don't wanna talk about it, I jus' wanna leave.
@@ -312,11 +326,11 @@ Jimbo! Here we are at Shafer's Crossing, lookin' for some animals.
 Kyle! it's okay.
 ```
 
-In the lines above, `!` acts as a separator between the character and what they say.
+Note: Your character lines may be a little different. That's okay!
 
 ### Add `filepath`
 
-In the `index` function, we currently have:
+Looking at `app.py`, in the `index` function, we currently have:
 
 ```python
     with f:
