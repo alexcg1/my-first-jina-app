@@ -10,7 +10,7 @@ This tutorial guides you through building your own neural search app using the [
 
 Our example program will be a simple neural search engine for text. It will take a user's typed input, and return a list of lines from South Park that match most closely.
 
-⚠️ Need help? Check out the **troubleshooting** section further along.
+⚠️ Need help? Check out the **[troubleshooting](#troubleshooting)** section further along.
 
 ## 🗝️ Key Concepts
 
@@ -267,7 +267,7 @@ In your terminal:
 pip install -r requirements.txt
 ```
 
-⚠️ Now we're going to get our hands dirty, and if we're going to run into trouble, this is where we'll find it. If you hit any snags, check our **[troubleshooting](./troubleshooting.md)** section!
+⚠️ Now we're going to get our hands dirty, and if we're going to run into trouble, this is where we'll find it. If you hit any snags, check our **[troubleshooting](#troubleshooting)** section!
 
 ## Prepare the Data
 
@@ -334,7 +334,7 @@ Looking at `app.py`, in the `index` function, we currently have:
 
 ```python
     with f:
-        f.index_lines(['abc', 'cde', 'efg'], batch_size=64, read_mode='rb', size=num_docs)
+        f.index_lines(['abc', 'cde', 'efg'], batch_size=64, read_mode='r', size=num_docs)
 ```
 
 As you can see, this indexes just 3 strings. Let's load up our South Park file instead with the `filepath` parameter:
@@ -343,8 +343,6 @@ As you can see, this indexes just 3 strings. Let's load up our South Park file i
     with f:
         f.index_lines(filepath='data/character-lines.csv', batch_size=64, read_mode='r', size=num_docs)
 ```
-
-Note we've also changed `read_mode` to `r`, since we're reading strings, not bytes.
 
 ### Index Fewer Documents
 
@@ -363,6 +361,13 @@ num_docs = os.environ.get('MAX_DOCS', 500)
 ```
 
 That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. If it still seems too slow, reduce that number down to 50 or so.
+
+## BUGS: TODO XXX
+
+This stuff should already be in `requirements.txt` from cookiecutter-jina!
+
+`pip install transformers`
+`pip install torch`
 
 ## Run the Flows
 
@@ -411,6 +416,8 @@ index [======              ] 📃    384 ⏱️ 71.4s 🐎 5.4/s      6      bat
 ```
 
 </details>
+
+This may take a little while the first time, since Jina needs to download the language model and tokenizer (XXX is this correct?) to deal with the data. You can think of these as the brains behind the neural network that powers the search.
 
 ### Search Mode
 
