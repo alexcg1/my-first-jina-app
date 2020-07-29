@@ -390,9 +390,9 @@ Every Flow has well, a flow to it. Different Pods pass data along the Flow, with
 
 If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
 
-In Jina 101, we discussed [Documents and Chunks](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#document--chunk). In our indexing Flow, we:
+Jina 101, discusses [Documents and Chunks](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#document--chunk). In our indexing Flow, we:
 
-* Break our giant text file into sentences. We'll regard each sentence as a Document (For simplicity, each Document has only one Chunk, containing the same sentence as the Document)
+* Break our giant text file into sentences. We'll regard each sentence as a Document (For simplicity in this example, one sentence = one Document = one Chunk)
 * Encode each sentence, as a Chunk, into a vector (in this case, using a Pod which specifies `distilbert` from the [🤗Transformers library](https://huggingface.co/transformers))
 * Build indexes for each Chunk and Document for fast lookup
 * Store the vectors in our indexes
