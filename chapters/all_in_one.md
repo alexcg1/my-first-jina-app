@@ -16,15 +16,14 @@ First of all, read up on [Jina 101](https://github.com/jina-ai/jina/tree/master/
 
 ## 🧪 Try it Out!
 
-Before going through the trouble of downloading, configuring and testing your app, let's get an idea of the finished product:
+Before going through the trouble of downloading, configuring and testing your app, let's get an idea of the finished product. In this case, it's exactly the same as what we're building, but with lines from South Park instead:
 
 ### Deploy with Docker
 
 Jina has a pre-built Docker image with indexed data. You can run it with:
 
-XXX Damn, no docker image for Star Trek
 ```bash
-docker run -p 45678:45678 jinaai/hub.app.distilbert-startrek
+docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark
 ```
 Note: You'll need to run the Docker image before trying the steps below
 
@@ -34,7 +33,7 @@ Note: You'll need to run the Docker image before trying the steps below
 
 1. Go to [jinabox](https://jina.ai/jinabox.js) in your browser
 2. Ensure you have the server endpoint set to `http://localhost:45678/api/search`
-3. Type a phrase into the search bar and see which Star Trek lines come up
+3. Type a phrase into the search bar and see which South Park lines come up
 
 **Note:** If it times out the first time, that's because the query system is still warming up. Try again in a few seconds!
 
@@ -43,21 +42,13 @@ Note: You'll need to run the Docker image before trying the steps below
 Alternatively, you can open your shell and check the results via the RESTful API. The matched results are stored in `topkResults`.
 
 ```bash
-curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:picard to riker"]}' -H 'Content-Type: application/json' 'http://0.0.0.0:45678/api/search'
+curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:hey, dude"]}' -H 'Content-Type: application/json' 'http://0.0.0.0:45678/api/search'
 ```
 
-<details>
-  <summary>See console output</summary>
+You'll see the results output in JSON format. Each result looks like:
 
 ```json  
 {
-  "search": {
-    "docs": [
-      {
-        "weight": 1.0,
-        "length": 1,
-        "topkResults": [
-          {
             "matchDoc": {
               "docId": 48,
               "weight": 1.0,
@@ -69,122 +60,6 @@ curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:picard to
               "opName": "MinRanker"
             }
           },
-          {
-            "matchDoc": {
-              "docId": 9322,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Stan[SEP]Oh thanks, dude.\n"
-            },
-            "score": {
-              "value": 0.29002887,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 4053,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Kyle[SEP]Here's our cell phone, dude.\n"
-            },
-            "score": {
-              "value": 0.28318727,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 2134,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Kyle[SEP]Oh hey dude.\n"
-            },
-            "score": {
-              "value": 0.28181127,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 5083,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Henrietta[SEP]Thanks you guys.\n"
-            },
-            "score": {
-              "value": 0.27215105,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 2823,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Cartman[SEP]Kyle, I want you to check his buddy list.\n"
-            },
-            "score": {
-              "value": 0.27158132,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 4291,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Kyle[SEP]What are you talking about, dude!\n"
-            },
-            "score": {
-              "value": 0.2715585,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 3386,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Kyle[SEP]Wow, dude, check it out!\n"
-            },
-            "score": {
-              "value": 0.27094495,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 4613,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Kyle[SEP]Oh no, dude!\n"
-            },
-            "score": {
-              "value": 0.2704847,
-              "opName": "MinRanker"
-            }
-          },
-          {
-            "matchDoc": {
-              "docId": 890,
-              "weight": 1.0,
-              "mimeType": "text/plain",
-              "text": "Stan[SEP]Hey you guys!\n"
-            },
-            "score": {
-              "value": 0.27007768,
-              "opName": "MinRanker"
-            }
-          }
-        ],
-        "mimeType": "text/plain",
-        "text": "text:hey, dude"
-      }
-    ],
-    "topK": 10
-  }
-}
 ```
 
 Now go back to your terminal and hit `Ctrl-C` (or `Command-C` on Mac) a few times to ensure you've stopped Docker.
