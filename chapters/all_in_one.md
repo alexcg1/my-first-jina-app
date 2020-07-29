@@ -232,7 +232,7 @@ For our Star Trek example, we recommend the following settings:
 * `index_type`: `strings`
 * `public_port`: `65481` (default value)
 
-All other fields you can fill in however you please.
+Just use the defaults for all other fields.
 
 ## 📂 Files and Folders
 
@@ -270,9 +270,9 @@ pip install -r requirements.txt
 
 ## Prepare the Data
 
-Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [SouthPark dataset](https://github.com/BobAdamsEE/SouthParkData/) contains the characters and lines from seasons 1 to 19. Many thanks to [BobAdamsEE](https://github.com/BobAdamsEE) for sharing this awesome resource!👏
+Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [Star Trek dataset](https://www.kaggle.com/gjbroughton/start-trek-scripts) from Kaggle. We're using a subset in this example, which just contains the characters and lines from Star Trek: The Next Generation. This subset has also been pre-converted from JSON to CSV format, which is more suitable for Jina to process.
 
-Now let's ensure we're back in our base folder and download and process this dataset by running:
+Now let's ensure we're back in our base folder and download and the dataset by running:
 
 ```bash
 cd ..
@@ -283,11 +283,20 @@ bash ./get_data.sh
   <summary>See console output</summary>
 
 ```bash
-Cloning into './star_trek/data'...
-remote: Enumerating objects: 3852, done.
-remote: Total 3852 (delta 0), reused 0 (delta 0), pack-reused 3852
-Receiving objects: 100% (3852/3852), 5.11 MiB | 2.37 MiB/s, done.
-Resolving deltas: 100% (40/40), done.
+--2020-07-29 13:57:38--  https://github.com/alexcg1/startrek-startrek_tng/raw/master/startrek_tng.csv
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving github.com (github.com)... 13.237.44.5
+Connecting to github.com (github.com)|13.237.44.5|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/alexcg1/startrek-startrek_tng/master/startrek_tng.csv [following]
+--2020-07-29 13:57:39--  https://raw.githubusercontent.com/alexcg1/startrek-startrek_tng/master/startrek_tng.csv
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.164.133
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.164.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 4618017 (4.4M) [text/plain]
+Saving to: ‘./star_trek/data/startrek_tng.csv’
+
+startrek_tng.csv                               100%[=================================================================================================>]   4.40M  4.47MB/s    in 1.0s    
 ```
 
 </details>
@@ -300,29 +309,29 @@ Now that `get_data.sh` has downloaded the data (and called `process_data.py` to 
 cd star_trek
 ```
 
-Now we've got the file `character-lines.csv` in the `data` directory, which  we need to pass into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
+Now we've got the file `startrek_tng.csv` in the `data` directory, which  we need to pass into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
 
 ### Check the Data
 
 Let's just make sure the file has everything we want:
 
 ```shell
-head data/character-lines.csv
+head data/startrek_tng.csv
 ```
 
-You should see output consisting of characters (like `Stan`), a separator, (`!`), and the lines spoken by the character (`I don't wanna talk about it`...):
+You should see output consisting of characters (like `PICARD`), a separator, (`!`), and the lines spoken by the character (`I don't wanna talk about it`...):
 
 ```csv
-Stan! I don't wanna talk about it, I jus' wanna leave.
-Mysterion! Mrs.
-Sally! Pa-pa.
-Canadians! We want respect!
-Phillip! That smelly Saddam Hussein.
-Cartman! Strike me down while you can!
-Morpheus! What if I were to tell you.
-Kanye! Yep, got it.
-Jimbo! Here we are at Shafer's Crossing, lookin' for some animals.
-Kyle! it's okay.
+BAILIFF!The prisoners will all stand.
+BAILIFF!All present, stand and make respectful attention to honouredJudge.
+BAILIFF!Before this gracious court now appear these prisoners toanswer for the multiple and grievous savageries of their species. Howplead you, criminal?
+BAILIFF!Criminals keep silence!
+BAILIFF!You will answer the charges, criminals.
+BAILIFF!Criminal, you will read the charges to the court.
+BAILIFF!All present, respectfully stand. Q
+BAILIFF!This honourable court is adjourned. Stand respectfully. Q
+MCCOY!Hold it right there, boy.
+MCCOY!What about my age?
 ```
 
 Note: Your character lines may be a little different. That's okay!
@@ -340,7 +349,7 @@ As you can see, this indexes just 3 strings. Let's load up our Star Trek file in
 
 ```python
     with f:
-        f.index_lines(filepath='data/character-lines.csv', batch_size=64, read_mode='r', size=num_docs)
+        f.index_lines(filepath='data/startrek_tng.csv', batch_size=64, read_mode='r', size=num_docs)
 ```
 
 ### Index Fewer Documents
