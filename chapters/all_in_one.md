@@ -405,7 +405,7 @@ Our Pods perform all the tasks needed to make this happen:
 | `encoder`       | Encode each Chunk into a vector                      |
 | `chunk_idx`     | Build an index of Chunks                             |
 | `doc_idx`       | Store the Document content                           |
-| `join_all`      | Join the `chunk_indexer` and `doc_indexer` pathways |
+| `join_all`      | Join the `chunk_idx` and `doc_idx` pathways          |
 
 
 #### Diving into `index.yml`
@@ -584,7 +584,7 @@ So, in the query Flow we've got the following Pods:
 | `chunk_seg`     | Segments the user query into meaningful Chunks       |
 | `tf_encode`     | Encode each word of the query into a vector          |
 | `chunk_idx`     | Build an index for the Chunks for fast lookup        |
-| `ranker`        | Combine returned results into one Document           |
+| `ranker`        | Sort results list                                    |
 | `doc_idx`       | Store the Document content                           |
 
 Since many of the Pods are the same as in indexing, they share the same YAML but perform differently based on the task at hand.
