@@ -367,13 +367,6 @@ num_docs = os.environ.get('MAX_DOCS', 500)
 
 That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. If it still seems too slow, reduce that number down to 50 or so.
 
-## BUGS: TODO XXX
-
-This stuff should already be in `requirements.txt` from cookiecutter-jina!
-
-`pip install transformers`
-`pip install torch`
-
 ## Run the Flows
 
 Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows!
