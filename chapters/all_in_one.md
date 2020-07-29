@@ -663,17 +663,6 @@ We first use the built-in `TransformerTorchEncoder` as the Pod's **[Executor](ht
 | `model_name`       | Name of the model we're using                          |
 | `max_length`       | Maximum length to truncate tokenized sequences to      |
 
-<table width="100%">
-  <tr>
-    <td align="left" style="text-align:right">
-      <strong><a href="./run.md">⬅️ Previous: Running</a></strong>
-    </td>
-    <td align="right" style="text-align:right">
-      <strong><a href="./troubleshooting.md">Next: Troubleshooting ➡️</a></strong>
-    </td>
-  </tr>
-</table>
-
 All the other Pods follow similar practices. While a Flow differs based on task (indexing or searching), Pods differ based on *what* is being searched. If you're doing an image search, you'll follow similar steps to a text search (encode, chunk, index, etc) but the way you do each step is different to working with a text dataset. Therefore you'd use different Pods (although they'd have the same kinds of filename, so the Flow doesn't need to be changed to see them.)
 
 
