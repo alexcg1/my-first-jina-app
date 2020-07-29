@@ -371,7 +371,7 @@ That should speed up our testing by a factor of 100! Once we've verified everyth
 
 Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows!
 
-### Index Mode
+### Index Flow
 
 First up we need to build up an index of our file. We'll search through this index when we use the query Flow later.
 
@@ -417,7 +417,7 @@ index [======              ] 📃    384 ⏱️ 71.4s 🐎 5.4/s      6      bat
 
 This may take a little while the first time, since Jina needs to download the language model and tokenizer (XXX is this correct?) to deal with the data. You can think of these as the brains behind the neural network that powers the search.
 
-### Search Mode
+### Search Flow
 
 Run:
 
