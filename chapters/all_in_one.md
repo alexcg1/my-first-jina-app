@@ -582,9 +582,9 @@ So, in the query Flow we've got the following Pods:
 | Pod             | Task                                                 |
 | ---             | ---                                                  |
 | `chunk_seg`     | Segments the user query into meaningful Chunks       |
-| `encoder`       | Encode each word into a vector                       |
+| `encoder`       | Encode each word of the query into a vector          |
 | `tf_encode`     | XXX                                                  |
-| `chunk_indexer` | Build an index for the Chunks for fast lookup        |
+| `chunk_idx`     | Build an index for the Chunks for fast lookup        |
 | `ranker`        | Combine returned results into one Document           |
 | `doc_idx`       | Store the Document content                           |
 
@@ -676,7 +676,6 @@ We first use the built-in `TransformerTorchEncoder` as the **[Executor](https://
     </td>
   </tr>
 </table>
-
 
 
 ## Troubleshooting
