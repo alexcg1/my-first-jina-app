@@ -216,7 +216,7 @@ def index():
         f.index_lines(['abc', 'cde', 'efg'], batch_size=64, read_mode='r', size=num_docs)
 ```
 
-As you can see, this indexes just 3 strings. Let's load up our Star Trek file instead with the `filepath` parameter:
+As you can see, this indexes just 3 strings. Let's load up our Star Trek file instead with the `filepath` parameter. Just replace the last line of the function:
 
 ```python
 def index():
@@ -226,7 +226,7 @@ def index():
 
 ### Index Fewer Documents
 
-While we're here, let's reduce the number of documents we're indexing, just to speed things up while we're testing. We don't want to spend hours indexing only to have issues later on!
+While we're here, let's reduce the number of documents we're indexing, just to speed things up while we're testing. We don't want to spend ages indexing only to have issues later on!
 
 In the section above the `config` function, let's change:
 
@@ -388,7 +388,7 @@ Every Flow has well, a flow to it. Different Pods pass data along the Flow, with
 <img src="images/flow-index.png">
 </p>
 
-If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina to process, which is handled by the Pods in the Flow. Each Pod performs a different task.
+If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
 
 In Jina 101, we discussed [Documents and Chunks](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#document--chunk). In our indexing Flow, we:
 
