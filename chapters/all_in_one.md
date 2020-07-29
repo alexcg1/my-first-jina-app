@@ -260,7 +260,7 @@ In `pods/` we see `chunk.yml`, `craft.yml`, `doc.yml`, and `encode.yml` - these 
 
 More on Flows and Pods later!
 
-### Install Requirements
+## Install Requirements
 
 In your terminal:
 
@@ -303,21 +303,12 @@ startrek_tng.csv                               100%[============================
 
 </details>
 
-## Load the Data
+## Check the Data
 
-Now that `get_data.sh` has downloaded the data (and called `process_data.py` to process it), let's get back into the `star_trek` directory:
-
-```
-cd star_trek
-```
-
-Now we've got the file `startrek_tng.csv` in the `data` directory, which  we need to pass into `app.py`. `app.py` is a little too simple out of the box, so we'll have to make some changes:
-
-### Check the Data
-
-Let's just make sure the file has everything we want:
+Now that `get_data.sh` has downloaded the data, let's get back into the `star_trek` directory and make sure the file has everything we want:
 
 ```shell
+cd star_trek
 head data/startrek_tng.csv
 ```
 
@@ -338,9 +329,11 @@ MCCOY!What about my age?
 
 Note: Your character lines may be a little different. That's okay!
 
-### Add `filepath`
+## Load Data into Jina
 
-Looking at `app.py`, in the `index` function, we currently have:
+Now we we need to pass `startrek_tng.csv` into `app.py.` `app.py` is a little too simple out of the box, so we'll have to make some changes:
+
+In the `index` function, we currently have:
 
 ```python
     with f:
