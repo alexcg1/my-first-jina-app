@@ -331,9 +331,9 @@ Note: Your character lines may be a little different. That's okay!
 
 ## Load Data into Jina
 
-Now we we need to pass `startrek_tng.csv` into `app.py.` `app.py` is a little too simple out of the box, so we'll have to make some changes:
+Now we we need to pass `startrek_tng.csv` into `app.py` so we can index it. `app.py` is a little too simple out of the box, so we'll have to make some changes:
 
-In the `index` function, we currently have:
+Open `app.py` in your editor and check the `index` function, we currently have:
 
 ```python
     with f:
