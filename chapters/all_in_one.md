@@ -709,8 +709,8 @@ sudo apt-get install <package_name>
 
 In this tutorial you've learned:
 
-* How to install Jina
-* How to load data from files for indexing
+* How to install the Jina neural search framework
+* How to load and index text data from files
 * How to query data with `curl` and Jinabox
 * The nitty-gritty behind Jina Flows and Pods
 
