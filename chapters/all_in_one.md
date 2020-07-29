@@ -43,7 +43,7 @@ Note: You'll need to run the Docker image before trying the steps below
 Alternatively, you can open your shell and check the results via the RESTful API. The matched results are stored in `topkResults`.
 
 ```bash
-curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:hey, dude"]}' -H 'Content-Type: application/json' 'http://0.0.0.0:45678/api/search'
+curl --request POST -d '{"top_k": 10, "mode": "search", "data": ["text:picard to riker"]}' -H 'Content-Type: application/json' 'http://0.0.0.0:45678/api/search'
 ```
 
 <details>
