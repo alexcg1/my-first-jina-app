@@ -410,7 +410,7 @@ Our Pods perform all the tasks needed to make this happen:
 
 #### Diving into `index.yml`
 
-For indexing, we define which Pods to use in `flows/index.yml`. Earlier, cookiecutter already created some YAML files in `flows/` for us to start with. Let's break them down, starting with indexing:
+For indexing, we define which Pods to use in `flows/index.yml`. Earlier, cookiecutter created some YAML files in `flows/` for us to start with. Let's break them down, starting with indexing:
 
 <table>
 <tr>
@@ -600,7 +600,7 @@ Compared to `index.yml`, we have some extra features in `query.yml`:
 | Code                                     | Meaning                                                                  |
 | ---                                      | ---                                                                      |
 | `rest_api:true`                          | Use Jina's REST API, allowing clients like jinabox and `curl` to connect |
-| `port_grpc: $JINA_PORT`                  | The port for connecting to Jina's API                                    |
+| `port_expose: $JINA_PORT`                | The port for connecting to Jina's API                                    |
 | `polling: all`                           | Setting `polling` to `all` ensures all workers poll the message          |
 | `reducing_yaml_path: _merge_topk_chunks` | Use `_merge_topk_chunks` to reduce result from all replicas              |
 | `ranker:`                                | A Pod to rank results by relevance                                       |
@@ -627,13 +627,11 @@ This is how Pods in both Flows can play different roles while sharing the same Y
 
 <img src="https://raw.githubusercontent.com/jina-ai/jina/master/docs/chapters/101/img/ILLUS8.png" width="20%" align="left">
 
-You can think of the Flow as telling Jina *what* tasks to perform on the dataset. The Pods comprise the Flow and tell Jina *how* to perform each task, and they define the actual neural networks we use in neural search, namely the machine-learning models like `distilbert-base-cased`.
-
-As you may recall from [Jina 101](https://github.com/jina-ai/jina/tree/master/docs/chapters/101), A Pod is a group of Peas with the same property, running in parallel on a local host or over the network. A Pod provides a single network interface for its Peas, making them look like one single Pea from the outside. Beyond that, a Pod adds further control, scheduling, and context management to the Peas.
+You can think of the Flow as telling Jina *what* tasks to perform on the dataset. The Pods comprise the Flow and tell Jina *how* to perform each task, and they define the actual neural networks we use in neural search, namely the machine-learning models like `distilbert-base-cased`. (Which we can see in `pods/encode.yml`)
 
 Jina uses YAML files to describe objects like Flows and Pods, so we can easily configure the behavior of the Pods without touching their application code.
 
-Let's start by looking at our indexing Flow, `flows/index.yml`. Instead of the first Pod `crafter`, let's look at `encoder` which is a bit simpler:
+Let's start by looking at the Pods in our indexing Flow, `flows/index.yml`. Instead of the first Pod `crafter`, let's look at `encoder` which is a bit simpler:
 
 ```yaml
 pods:
@@ -657,7 +655,7 @@ with:
   max_length: 96
 ```
 
-We first use the built-in `TransformerTorchEncoder` as the **[Executor](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#executors)** in the Pod. The `with` field is used to specify the parameters that we pass to `TransformerTorchEncoder`.
+We first use the built-in `TransformerTorchEncoder` as the Pod's **[Executor](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#executors)**. The `with` field is used to specify the parameters we pass to `TransformerTorchEncoder`.
 
 | Parameter          | Effect                                                 |
 | ---                | ---                                                    |
@@ -675,6 +673,8 @@ We first use the built-in `TransformerTorchEncoder` as the **[Executor](https://
     </td>
   </tr>
 </table>
+
+All the other Pods follow similar practices. While a Flow differs based on task (indexing or searching), Pods differ based on *what* is being searched. If you're doing an image search, you'll follow similar steps to a text search (encode, chunk, index, etc) but the way you do each step is different to working with a text dataset. Therefore you'd use different Pods (although they'd have the same kinds of filename, so the Flow doesn't need to be changed to see them.)
 
 
 ## Troubleshooting
