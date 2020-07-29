@@ -582,8 +582,7 @@ So, in the query Flow we've got the following Pods:
 | Pod             | Task                                                 |
 | ---             | ---                                                  |
 | `chunk_seg`     | Segments the user query into meaningful Chunks       |
-| `encoder`       | Encode each word of the query into a vector          |
-| `tf_encode`     | XXX                                                  |
+| `tf_encode`     | Encode each word of the query into a vector          |
 | `chunk_idx`     | Build an index for the Chunks for fast lookup        |
 | `ranker`        | Combine returned results into one Document           |
 | `doc_idx`       | Store the Document content                           |
