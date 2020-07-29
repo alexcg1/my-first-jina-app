@@ -252,11 +252,13 @@ You should see a bunch of files in the `star_trek` folder that cookiecutter crea
 | `flows/`           | Folder to hold your Flows                                                |
 | `pods/`            | Folder to hold your Pods                                                 |
 | `README.md`        | An auto-generated README file                                            |
-| `requirements.txt` | A list of requirements for `pip`                                         |
+| `requirements.txt` | A list of required Python packages                                       |
 
 In the `flows/` folder we can see `index.yml` and `query.yml` - these define the indexing and querying Flows for your app.
 
 In `pods/` we see `chunk.yml`, `craft.yml`, `doc.yml`, and `encode.yml` - these Pods are called from the Flows to process data for indexing or querying.
+
+More on Flows and Pods later!
 
 ### Install Requirements
 
@@ -268,9 +270,9 @@ pip install -r requirements.txt
 
 ⚠️ Now we're going to get our hands dirty, and if we're going to run into trouble, this is where we'll find it. If you hit any snags, check our **[troubleshooting](#troubleshooting)** section!
 
-## Prepare the Data
+## Download the Dataset
 
-Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [Star Trek dataset](https://www.kaggle.com/gjbroughton/start-trek-scripts) from Kaggle. We're using a subset in this example, which just contains the characters and lines from Star Trek: The Next Generation. This subset has also been pre-converted from JSON to CSV format, which is more suitable for Jina to process.
+Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [Star Trek dataset](https://www.kaggle.com/gjbroughton/start-trek-scripts) from Kaggle contains all the scripts and individual character lines from Star Trek: The Original Series all the way through Star Trek: Enterprise. We're using a subset in this example, which just contains the characters and lines from Star Trek: The Next Generation. This subset has also been converted from JSON to CSV format, which is more suitable for Jina to process.
 
 Now let's ensure we're back in our base folder and download and the dataset by running:
 
