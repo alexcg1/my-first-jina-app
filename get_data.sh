@@ -1,5 +1,4 @@
 #!/bin/sh
-WORKDIR=./south_park/data/
+WORKDIR=./star_trek/data/
 mkdir -p ${WORKDIR}
-git clone https://github.com/alexcg1/startrek-character-lines.git $WORKDIR
-python prepare_data.py
+wget -P $WORKDIR https://github.com/alexcg1/startrek-character-lines/raw/master/startrek_tng.csv 
