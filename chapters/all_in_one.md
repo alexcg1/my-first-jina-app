@@ -187,7 +187,7 @@ cd star_trek
 head data/startrek_tng.csv
 ```
 
-You should see output consisting of characters (like `PICARD`), a separator, (`!`), and the lines spoken by the character (`I don't wanna talk about it`...):
+You should see output consisting of characters (like `MCCOY`), a separator, (`!`), and the lines spoken by the character (`What about my age?`):
 
 ```csv
 BAILIFF!The prisoners will all stand.
