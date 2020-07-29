@@ -336,6 +336,7 @@ Now we we need to pass `startrek_tng.csv` into `app.py` so we can index it. `app
 Open `app.py` in your editor and check the `index` function, we currently have:
 
 ```python
+def index():
     with f:
         f.index_lines(['abc', 'cde', 'efg'], batch_size=64, read_mode='r', size=num_docs)
 ```
@@ -343,6 +344,7 @@ Open `app.py` in your editor and check the `index` function, we currently have:
 As you can see, this indexes just 3 strings. Let's load up our Star Trek file instead with the `filepath` parameter:
 
 ```python
+def index():
     with f:
         f.index_lines(filepath='data/startrek_tng.csv', batch_size=64, read_mode='r', size=num_docs)
 ```
