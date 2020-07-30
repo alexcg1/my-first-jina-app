@@ -16,8 +16,6 @@ We'll cover:
 * A deeper look behind the scenes
 * What to do if things go wrong
 
-![](./images/jinabox-startrek.gif)
-
 If you're new to AI or search, don't worry. As long as you have some knowledge of Python and the Linux command-line you'll be fine. If it helps, think of yourself as Lieutenant Commander Data Science.
 
 ![](./images/not-amusing.gif)
@@ -25,6 +23,8 @@ If you're new to AI or search, don't worry. As long as you have some knowledge o
 # Try it Out!
 
 Before going through the trouble of downloading, configuring and testing your search engine, let's get an idea of the finished product. In this case, it's exactly the same as what we're building, but with lines from South Park instead:
+
+![](./images/jinabox-southpark.gif)
 
 ## Deploy with Docker
 
