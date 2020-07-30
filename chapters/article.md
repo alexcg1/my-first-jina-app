@@ -17,7 +17,9 @@ We'll cover:
 
 ![](./images/jinabox-startrek.gif)
 
-If you're new to AI or search, don't worry. As long as you have some knowledge of Python and the Linux command-line you'll be fine
+If you're new to AI or search, don't worry. As long as you have some knowledge of Python and the Linux command-line you'll be fine. If it helps, think of yourself as Lieutenant Commander Data Science.
+
+![](./images/not-amusing.gif)
 
 ## 🧪 Try it Out!
 
@@ -150,11 +152,13 @@ pip install -r requirements.txt
 
 If you hit any snags, check our **[troubleshooting](#troubleshooting)** section!
 
-## Download the Dataset
+## Download Dataset
 
-Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [Star Trek dataset](https://www.kaggle.com/gjbroughton/start-trek-scripts) from Kaggle contains all the scripts and individual character lines from Star Trek: The Original Series all the way through Star Trek: Enterprise. We're using a subset in this example, which just contains the characters and lines from Star Trek: The Next Generation. This subset has also been converted from JSON to CSV format, which is more suitable for Jina to process.
+Our goal is to find out who said what in Star Trek episodes when a user queries a phrase. The [Star Trek dataset](https://www.kaggle.com/gjbroughton/start-trek-scripts) from Kaggle contains all the scripts and individual character lines from *Star Trek: The Original Series* all the way through *Star Trek: Enterprise*. 
 
-Now let's ensure we're back in our base folder and download and the dataset by running:
+We're just using a subset in this example, containing the characters and lines from *Star Trek: The Next Generation*. This has also been converted from JSON to CSV format, which is more suitable for Jina to process.
+
+Now let's ensure we're back in our base folder and download the dataset by running:
 
 ```bash
 cd ..
@@ -183,7 +187,7 @@ startrek_tng.csv                               100%[============================
 
 </details>
 
-## Check the Data
+## Check Data
 
 Now that `get_data.sh` has downloaded the data, let's get back into the `star_trek` directory and make sure the file has everything we want:
 
@@ -209,9 +213,9 @@ MCCOY!What about my age?
 
 Note: Your character lines may be a little different. That's okay!
 
-## Load Data into Jina
+## Load Data
 
-Now we we need to pass `startrek_tng.csv` into `app.py` so we can index it. `app.py` is a little too simple out of the box, so we'll have to make some changes:
+Now we we need to pass `startrek_tng.csv` into `app.py` so we can index it. `app.py` is a little too simple out of the box, so let's make some changes:
 
 Open `app.py` in your editor and check the `index` function, we currently have:
 
@@ -245,11 +249,11 @@ to:
 num_docs = os.environ.get('MAX_DOCS', 500)
 ```
 
-That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. If it still seems too slow, reduce that number down to 50 or so.
+That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. 
 
-## Run the Flows
+## Run the App
 
-Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows!
+Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows! Flows are the different tasks our app performs, like indexing or searching the data.
 
 ### Index Flow
 
@@ -259,49 +263,13 @@ First up we need to build up an index of our file. We'll search through this ind
 python app.py index
 ```
 
-<details>
-<summary>See console output</summary>
-
-```console
-index [====                ] 📃    256 ⏱️ 52.1s 🐎 4.9/s      4      batch        encoder@273512[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-2▸⚐
-        encoder@273512[I]:received "index" from gateway▸crafter▸⚐               
-        encoder@273516[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-2▸⚐
-        encoder@273525[I]:received "index" from gateway▸crafter▸encoder-head▸⚐    
-      chunk_idx@273529[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-2▸encoder-tail▸⚐
-      chunk_idx@273537[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-2▸encoder-tail▸chunk_idx-head▸⚐
-      chunk_idx@273529[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-2▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸⚐
-      chunk_idx@273533[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-2▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸⚐
-       join_all@273549[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-2▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸chunk_idx-tail▸⚐
-       join_all@273549[I]:collected 2/2 parts of IndexRequest                    
-index [=====               ] 📃    320 ⏱️ 71.2s 🐎 4.5/s      5      batch        encoder@273512[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-1▸⚐
-        encoder@273512[I]:received "index" from gateway▸crafter▸⚐
-        encoder@273516[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸⚐
-        encoder@273520[I]:received "index" from gateway▸crafter▸encoder-head▸⚐    
-      chunk_idx@273529[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸⚐                        
-      chunk_idx@273541[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸⚐
-      chunk_idx@273529[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-2▸⚐
-      chunk_idx@273533[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-2▸⚐                           
-       join_all@273549[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-2▸chunk_idx-tail▸⚐
-       join_all@273549[I]:collected 2/2 parts of IndexRequest                       
-index [======              ] 📃    384 ⏱️ 71.4s 🐎 5.4/s      6      batch        encoder@273512[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-1▸⚐
-        encoder@273516[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸⚐
-      chunk_idx@273529[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸⚐
-      chunk_idx@273537[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸⚐
-      chunk_idx@273529[I]:received "control" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸⚐
-      chunk_idx@273533[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸⚐
-       join_all@273549[I]:received "index" from gateway▸crafter▸encoder-head▸encoder-1▸encoder-tail▸chunk_idx-head▸chunk_idx-1▸chunk_idx-tail▸⚐
-       join_all@273549[I]:collected 2/2 parts of IndexRequest
-```
-
-</details>
-
-Once you see this line:
+Your app will show a lot of output in the shell, but you'll know it's finished when you see the line:
 
 ```console
 Flow@133216[S]:flow is closed and all resources should be released already, current build level is 0
 ```
 
-You'll know indexing is complete. This may take a little while the first time, since Jina needs to download the language model and tokenizer (XXX is this correct?) to deal with the data. You can think of these as the brains behind the neural network that powers the search.
+This may take a little while the first time, since Jina needs to download the language model and tokenizer to process the data. You can think of these as the brains behind the neural network that powers the search.
 
 ### Search Flow
 
@@ -368,7 +336,7 @@ This is where we dive deeper to learn what happens inside each Flow and how they
 
 <img src="https://raw.githubusercontent.com/jina-ai/jina/master/docs/chapters/101/img/ILLUS10.png" width="30%" align="left">
 
-As you can see in [Jina 101](https://github.com/jina-ai/jina/tree/master/docs/chapters/101), just as a plant manages nutrient flow and growth rate for its branches, a Flow manages the states and context of a group of Pods, orchestrating them to accomplish one task. Whether a Pod is remote or running in Docker, one Flow rules them all!
+Just as a plant manages nutrient flow and growth rate for its branches, a Flow manages the states and context of a group of Pods, orchestrating them to accomplish one task. Whether a Pod is remote or running in Docker, one Flow rules them all!
 
 We define Flows in `app.py` to index and query the content in our Star Trek dataset.
 
@@ -395,7 +363,7 @@ Every Flow has well, a flow to it. Different Pods pass data along the Flow, with
 
 If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
 
-Jina 101, discusses [Documents and Chunks](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#document--chunk). In our indexing Flow, we:
+In our indexing Flow, we:
 
 * Break our giant text file into sentences. We'll regard each sentence as a Document (For simplicity in this example, one sentence = one Document = one Chunk)
 * Encode each sentence, as a Chunk, into a vector (in this case, using a Pod which specifies `distilbert` from the [🤗Transformers library](https://huggingface.co/transformers))
@@ -404,14 +372,11 @@ Jina 101, discusses [Documents and Chunks](https://github.com/jina-ai/jina/tree/
 
 Our Pods perform all the tasks needed to make this happen:
 
-| Pod             | Task                                                 |
-| ---             | ---                                                  |
-| `crafter`       | Split the Document into Chunks                       |
-| `encoder`       | Encode each Chunk into a vector                      |
-| `chunk_idx`     | Build an index of Chunks                             |
-| `doc_idx`       | Store the Document content                           |
-| `join_all`      | Join the `chunk_idx` and `doc_idx` pathways          |
-
+* `crafter`       - Split the Document into Chunks                       
+* `encoder`       - Encode each Chunk into a vector                      
+* `chunk_idx`     - Build an index of Chunks                             
+* `doc_idx`       - Store the Document content                           
+* `join_all`      - Join the `chunk_idx` and `doc_idx` pathways          
 
 #### Diving into `index.yml`
 
@@ -584,13 +549,13 @@ In indexing we have to break down the Document into Chunks and index it. For que
 
 So, in the query Flow we've got the following Pods:
 
-| Pod             | Task                                                 |
-| ---             | ---                                                  |
-| `chunk_seg`     | Segments the user query into meaningful Chunks       |
-| `tf_encode`     | Encode each word of the query into a vector          |
-| `chunk_idx`     | Build an index for the Chunks for fast lookup        |
-| `ranker`        | Sort results list                                    |
-| `doc_idx`       | Store the Document content                           |
+* Pod             | Task                                                 
+* ---             | ---                                                  
+* `chunk_seg`     | Segments the user query into meaningful Chunks       
+* `tf_encode`     | Encode each word of the query into a vector          
+* `chunk_idx`     | Build an index for the Chunks for fast lookup        
+* `ranker`        | Sort results list                                    
+* `doc_idx`       | Store the Document content                           
 
 Since many of the Pods are the same as in indexing, they share the same YAML but perform differently based on the task at hand.
 
@@ -602,13 +567,13 @@ Now that both our Flows are ready for action, let's take a quick look at the dif
 
 Compared to `index.yml`, we have some extra features in `query.yml`:
 
-| Code                                     | Meaning                                                                  |
-| ---                                      | ---                                                                      |
-| `rest_api:true`                          | Use Jina's REST API, allowing clients like jinabox and `curl` to connect |
-| `port_expose: $JINA_PORT`                | The port for connecting to Jina's API                                    |
-| `polling: all`                           | Setting `polling` to `all` ensures all workers poll the message          |
-| `reducing_yaml_path: _merge_topk_chunks` | Use `_merge_topk_chunks` to reduce result from all replicas              |
-| `ranker:`                                | A Pod to rank results by relevance                                       |
+* Code                                     | Meaning                                                                  
+* ---                                      | ---                                                                      
+* `rest_api:true`                          | Use Jina's REST API, allowing clients like jinabox and `curl` to connect 
+* `port_expose: $JINA_PORT`                | The port for connecting to Jina's API                                    
+* `polling: all`                           | Setting `polling` to `all` ensures all workers poll the message          
+* `reducing_yaml_path: _merge_topk_chunks` | Use `_merge_topk_chunks` to reduce result from all replicas              
+* `ranker:`                                | A Pod to rank results by relevance                                       
 
 #### Structures
 
@@ -621,10 +586,10 @@ While the two Flows share (most of) the same Pods, there are some differences in
 
 In our RESTful API we set the `mode` field in the JSON body and send the request to the corresponding API:
 
-| API endpoint | JSON
-| ---          | ---                  |
-| `api/index`  | `{"mode": "index"}`  |
-| `api/search` | `{"mode": "search"}` |
+* API endpoint | JSON
+* ---          | ---                  
+* `api/index`  | `{"mode": "index"}`  
+* `api/search` | `{"mode": "search"}` 
 
 This is how Pods in both Flows can play different roles while sharing the same YAML files.
 
@@ -662,14 +627,11 @@ with:
 
 We first use the built-in `TransformerTorchEncoder` as the Pod's **[Executor](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#executors)**. The `with` field is used to specify the parameters we pass to `TransformerTorchEncoder`.
 
-| Parameter          | Effect                                                 |
-| ---                | ---                                                    |
-| `pooling_strategy` | Strategy to merge word embeddings into chunk embedding |
-| `model_name`       | Name of the model we're using                          |
-| `max_length`       | Maximum length to truncate tokenized sequences to      |
+* `pooling_strategy` - Strategy to merge word embeddings into chunk embedding 
+* `model_name`       - Name of the model we're using                          
+* `max_length`       - Maximum length to truncate tokenized sequences to      
 
 All the other Pods follow similar practices. While a Flow differs based on task (indexing or searching), Pods differ based on *what* is being searched. If you're doing an image search, you'll follow similar steps to a text search (encode, chunk, index, etc) but the way you do each step is different to working with a text dataset. Therefore you'd use different Pods (although they'd have the same kinds of filename, so the Flow doesn't need to be changed to see them.)
-
 
 ## Troubleshooting
 
@@ -699,7 +661,9 @@ For any of these errors you'll need to install the relevant software package ont
 sudo apt-get install <package_name>
 ```
 
-## 🎁 Wrap Up
+## 🎁 Congratulations! We Did It!
+
+![](./images/scotty-booze.gif)
 
 In this tutorial you've learned:
 
