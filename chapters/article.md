@@ -1,5 +1,6 @@
 # Build a BERT-based Semantic Search System...For Star Trek
-## It's search Jim, but not as know it
+
+## It's search Jim, but not as we know it
 
 If you read my previous article on Towards Data Science, you'll know I'm a bit of a Star Trek nerd. There's only one thing I like more than Star Trek, and that's building cool new stuff with AI. So I thought I'd combine the two!
 
@@ -21,11 +22,11 @@ If you're new to AI or search, don't worry. As long as you have some knowledge o
 
 ![](./images/not-amusing.gif)
 
-## 🧪 Try it Out!
+# Try it Out!
 
 Before going through the trouble of downloading, configuring and testing your search engine, let's get an idea of the finished product. In this case, it's exactly the same as what we're building, but with lines from South Park instead:
 
-### Deploy with Docker
+## Deploy with Docker
 
 Jina has a pre-built Docker image with indexed data from South Park. You can run it with:
 
@@ -35,7 +36,7 @@ docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark
 
 After getting Docker up and running, you can start searching for those South Park lines.
 
-### Query with Jinabox
+## Query with Jinabox
 
 [Jinabox](https://github.com/jina-ai/jinabox.js/) is a simple web-based front-end for neural search. You can see it in the graphic at the top of this tutorial.
 
@@ -45,7 +46,7 @@ After getting Docker up and running, you can start searching for those South Par
 
 **Note:** If it times out the first time, that's because the query system is still warming up. Try again in a few seconds!
 
-### Query with `curl`
+## Query with `curl`
 
 Alternatively, you can open your shell and check the results via the RESTful API. The matched results are stored in `topkResults`.
 
@@ -72,20 +73,18 @@ You'll see the results output in JSON format. Each result looks like:
 
 Now go back to your terminal and hit `Ctrl-C` (or `Command-C` on Mac) a few times to ensure you've stopped Docker.
 
-</details>
-
-## 🐍 Install
+# Install
 
 Now that you know what we're building, let's get started!
 
-### You Will Need
+## You Will Need
 
 * A basic knowledge of Python
 * Python 3.7 or higher installed, and `pip`
 * A Mac or Linux computer (Jina doesn't currently support Windows)
 * 8 gigabytes or more of RAM
 
-### Clone the Repo
+## Clone the Repo
 
 Let's get the basic files we need to get moving:
 
@@ -94,7 +93,7 @@ git clone git@github.com:alexcg1/my-first-jina-app.git
 cd my-first-jina-app
 ```
 
-### Cookiecutter
+## Run Cookiecutter
 
 ![](./images/cookie_monster.gif)
 
@@ -114,7 +113,7 @@ For our Star Trek example, use the following settings:
 
 Just use the defaults for all other fields.
 
-## 📂 Files and Folders
+# Files and Folders
 
 After running `cookiecutter`, run:
 
@@ -165,8 +164,7 @@ cd ..
 bash ./get_data.sh
 ```
 
-<details>
-  <summary>See console output</summary>
+You should see some output like this to show it's downloading:
 
 ```bash
 --2020-07-29 13:57:38--  https://github.com/alexcg1/startrek-startrek_tng/raw/master/startrek_tng.csv
@@ -184,8 +182,6 @@ Saving to: ‘./star_trek/data/startrek_tng.csv’
 
 startrek_tng.csv                               100%[=================================================================================================>]   4.40M  4.47MB/s    in 1.0s    
 ```
-
-</details>
 
 ## Check Data
 
@@ -233,7 +229,7 @@ def index():
         f.index_lines(filepath='data/startrek_tng.csv', batch_size=64, read_mode='r', size=num_docs)
 ```
 
-### Index Fewer Documents
+## Index Fewer Documents
 
 While we're here, let's reduce the number of documents we're indexing, just to speed things up while we're testing. We don't want to spend ages indexing only to have issues later on!
 
@@ -251,11 +247,11 @@ num_docs = os.environ.get('MAX_DOCS', 500)
 
 That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. 
 
-## Run the App
+## Run your Search Engine!
 
 Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows! Flows are the different tasks our app performs, like indexing or searching the data.
 
-### Index Flow
+## Indexing
 
 First up we need to build up an index of our file. We'll search through this index when we use the query Flow later.
 
@@ -271,7 +267,7 @@ Flow@133216[S]:flow is closed and all resources should be released already, curr
 
 This may take a little while the first time, since Jina needs to download the language model and tokenizer to process the data. You can think of these as the brains behind the neural network that powers the search.
 
-### Search Flow
+## Activating Search Mode
 
 Run:
 
@@ -289,11 +285,11 @@ Flow@85144[S]:flow is started at 0.0.0.0:65481, you can now use client to send r
 
 ℹ️  `python app.py search` doesn't pop up a search interface - for that you'll need to connect via `curl`, Jinabox, or another client.
 
-### Searching Data
+## Searching
 
 Now that the app is running in search mode, we can search from the web browser with Jinabox or from the terminal with `curl`:
 
-#### Jinabox
+### Jinabox
 
 ![](./images/jinabox-startrek.gif)
  
@@ -301,7 +297,7 @@ Now that the app is running in search mode, we can search from the web browser w
 2. Ensure you have the server endpoint set to `http://localhost:65481/api/search`
 3. Type a phrase into the search bar and see which Star Trek lines come up
 
-#### Curl
+### Curl
 
 `curl` will spit out a *lot* of information in JSON format - not just the lines you're searching for, but all sorts of metadata about the search and the lines it returns. Look for the lines starting with `"matchDoc"` to find the matches.
 
@@ -330,9 +326,12 @@ Congratulations! You've just built your very own search engine!
 
 # How Does it Actually Work?
 
-This is where we dive deeper to learn what happens inside each Flow and how they're built up from Pods.
+Jina has a couple of important concepts: **Flows** and **Pods**:
 
-## 🌱 Flows
+* The Flow tells Jina *what* tasks to perform on the dataset, like indexing or searching. Each Flow is built from individual Pods.
+* The Pods comprise the Flow and tell Jina *how* to perform each task step by step, like breaking text into chunks, indexing it, and so on. They define the actual neural networks we use in neural search, namely the language models like `distilbert-base-cased`. (Which we can see in `pods/encode.yml`)
+
+## Flows
 
 <img src="https://raw.githubusercontent.com/jina-ai/jina/master/docs/chapters/101/img/ILLUS10.png" width="30%" align="left">
 
@@ -353,6 +352,8 @@ def index():
 
 It really is that simple! Alternatively you can build Flows in `app.py` itself [without specifying them in YAML](https://docs.jina.ai/chapters/flow/index.html).
 
+No matter whether you're dealing with text, graphics, sound, or video, all datasets need to be indexed and queried, and the steps for doing each (chunking, vector encoding) are more or less the same (even if *how* you perform each step is different - that's where Pods come in!)
+
 ### Indexing
 
 Every Flow has well, a flow to it. Different Pods pass data along the Flow, with one Pod's output becoming another Pod's input. Look at our indexing Flow as an example:
@@ -363,14 +364,7 @@ Every Flow has well, a flow to it. Different Pods pass data along the Flow, with
 
 If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
 
-In our indexing Flow, we:
-
-* Break our giant text file into sentences. We'll regard each sentence as a Document (For simplicity in this example, one sentence = one Document = one Chunk)
-* Encode each sentence, as a Chunk, into a vector (in this case, using a Pod which specifies `distilbert` from the [🤗Transformers library](https://huggingface.co/transformers))
-* Build indexes for each Chunk and Document for fast lookup
-* Store the vectors in our indexes
-
-Our Pods perform all the tasks needed to make this happen:
+In our indexing Flow, we use the following Pods, as defined in `flows/index.yml`:
 
 * `crafter`       - Split the Document into Chunks                       
 * `encoder`       - Encode each Chunk into a vector                      
@@ -549,13 +543,11 @@ In indexing we have to break down the Document into Chunks and index it. For que
 
 So, in the query Flow we've got the following Pods:
 
-* Pod             | Task                                                 
-* ---             | ---                                                  
-* `chunk_seg`     | Segments the user query into meaningful Chunks       
-* `tf_encode`     | Encode each word of the query into a vector          
-* `chunk_idx`     | Build an index for the Chunks for fast lookup        
-* `ranker`        | Sort results list                                    
-* `doc_idx`       | Store the Document content                           
+* `chunk_seg`     - Segments the user query into meaningful Chunks       
+* `tf_encode`     - Encode each word of the query into a vector          
+* `chunk_idx`     - Build an index for the Chunks for fast lookup        
+* `ranker`        - Sort results list                                    
+* `doc_idx`       - Store the Document content                           
 
 Since many of the Pods are the same as in indexing, they share the same YAML but perform differently based on the task at hand.
 
@@ -567,13 +559,11 @@ Now that both our Flows are ready for action, let's take a quick look at the dif
 
 Compared to `index.yml`, we have some extra features in `query.yml`:
 
-* Code                                     | Meaning                                                                  
-* ---                                      | ---                                                                      
-* `rest_api:true`                          | Use Jina's REST API, allowing clients like jinabox and `curl` to connect 
-* `port_expose: $JINA_PORT`                | The port for connecting to Jina's API                                    
-* `polling: all`                           | Setting `polling` to `all` ensures all workers poll the message          
-* `reducing_yaml_path: _merge_topk_chunks` | Use `_merge_topk_chunks` to reduce result from all replicas              
-* `ranker:`                                | A Pod to rank results by relevance                                       
+* `rest_api:true`                          - Use Jina's REST API, allowing clients like jinabox and `curl` to connect 
+* `port_expose: $JINA_PORT`                - The port for connecting to Jina's API                                    
+* `polling: all`                           - Setting `polling` to `all` ensures all workers poll the message          
+* `reducing_yaml_path: _merge_topk_chunks` - Use `_merge_topk_chunks` to reduce result from all replicas              
+* `ranker:`                                - A Pod to rank results by relevance                                       
 
 #### Structures
 
@@ -586,10 +576,8 @@ While the two Flows share (most of) the same Pods, there are some differences in
 
 In our RESTful API we set the `mode` field in the JSON body and send the request to the corresponding API:
 
-* API endpoint | JSON
-* ---          | ---                  
-* `api/index`  | `{"mode": "index"}`  
-* `api/search` | `{"mode": "search"}` 
+* `api/index`  - `{"mode": "index"}`  
+* `api/search` - `{"mode": "search"}` 
 
 This is how Pods in both Flows can play different roles while sharing the same YAML files.
 
