@@ -2,6 +2,8 @@
 
 ## It's search Jim, but not as we know it
 
+![](images/startrek_search.png)
+
 If you read my [previous article on Towards Data Science](https://towardsdatascience.com/gpt-3-is-the-future-but-what-can-nlp-do-in-the-present-7aae3f21e8ed) you'll know I'm a bit of a Star Trek nerd. There's only one thing I like more than Star Trek, and that's building cool new stuff with AI. So I thought I'd combine the two yet again!
 
 In this tutorial we're going to build our own search engine to search all the lines from *Star Trek: The Next Generation*. We'll be using [Jina](https://github.com/jina-ai/jina/), a neural search framework which uses deep learning to power the our NLP search, though we could easily use it for image, audio or video search if we wanted to.
