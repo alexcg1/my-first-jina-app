@@ -407,7 +407,7 @@ pods:
   ranker:
     yaml_path: BiMatchRanker
   doc_idx:
-    yaml_path: pods/doc.ymlJust like indexing, the querying Flow is also defined in a YAML file. Much of it is similar to indexing:
+    yaml_path: pods/doc.yml
 ```
 
 When we were indexing we broke the Document into Chunks to index it. For querying we do the same, but this time the Document is the query the user types in, not the Star Trek dataset. We'll use many of the same Pods, but there are a few differences to bear in mind. In the big picture:
@@ -432,7 +432,7 @@ How does Jina know whether it should be indexing or searching? In our RESTful AP
 
 <img src="https://raw.githubusercontent.com/jina-ai/jina/master/docs/chapters/101/img/ILLUS8.png" width="20%" align="left">
 
-As we discussed above, a Flow tells Jina *what* task to perform and is comprised of Pods. And a Pod tells Jina *how* to perform that task (i.e. which is the right tool for the job?). Both Pods and Flows are defined in YAML.
+As we discussed above, a Flow tells Jina *what* task to perform and is comprised of Pods. And a Pod tells Jina *how* to perform that task (i.e. which is the right tool for the job?). Both Pods and Flows are written in YAML.
 
 Let's start by looking at a Pod in our indexing Flow, `flows/index.yml`. Instead of the first Pod `crafter`, let's look at `encoder` which is a bit simpler:
 
@@ -448,7 +448,7 @@ pods:
     read_only: true
 ```
 
-As we can see, the `encoder` Pod's YAML file is stored in `pods/encode.yml`:
+As we can see, the Pod's YAML file is stored in `pods/encode.yml`:
 
 ```yaml
 !TransformerTorchEncoder
@@ -458,7 +458,7 @@ with:
   max_length: 96
 ```
 
-We first use the built-in `TransformerTorchEncoder` as the Pod's Executor. Each Pod has a different Executor based on its task, and an Executor represents an algorithm, in this case encoding. The `with` field specifies the parameters we pass to `TransformerTorchEncoder`.
+We first use the built-in `TransformerTorchEncoder` as the Pod's Executor. Each Pod has a different Executor based on its task, and an Executor represents an algorithm, in this case encoding. The Executor differs based on what's being encoded. For video or audio you'd use a different one. The `with` field specifies the parameters we pass to `TransformerTorchEncoder`.
 
 * `pooling_strategy` - Strategy to merge word embeddings into chunk embedding 
 * `model_name`       - Name of the model we're using                          
