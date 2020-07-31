@@ -494,7 +494,7 @@ For any of these errors you'll need to install the relevant software package ont
 sudo apt-get install <package_name>
 ```
 
-## 🎁 Congratulations! We Did It!
+# Congratulations! We Did It!
 
 ![](./images/scotty-booze.gif)
 
