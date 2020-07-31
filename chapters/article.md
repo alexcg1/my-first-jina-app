@@ -2,9 +2,9 @@
 
 ## It's search Jim, but not as we know it
 
-If you read my previous article on Towards Data Science, you'll know I'm a bit of a Star Trek nerd. There's only one thing I like more than Star Trek, and that's building cool new stuff with AI. So I thought I'd combine the two!
+If you read my [previous article on Towards Data Science](https://towardsdatascience.com/gpt-3-is-the-future-but-what-can-nlp-do-in-the-present-7aae3f21e8ed) you'll know I'm a bit of a Star Trek nerd. There's only one thing I like more than Star Trek, and that's building cool new stuff with AI. So I thought I'd combine the two yet again!
 
-In this tutorial we're going to build our own search engine to search all the lines from *Star Trek: The Next Generation*. We'll be using [Jina](https://github.com/jina-ai/jina/), a neural search framework which uses deep learning to power the (in our case) NLP search.
+In this tutorial we're going to build our own search engine to search all the lines from *Star Trek: The Next Generation*. We'll be using [Jina](https://github.com/jina-ai/jina/), a neural search framework which uses deep learning to power the our NLP search, though we could easily use it for image, audio or video search if we wanted to.
 
 We'll cover:
 
@@ -16,17 +16,15 @@ We'll cover:
 * A deeper look behind the scenes
 * What to do if things go wrong
 
-If you're new to AI or search, don't worry. As long as you have some knowledge of Python and the Linux command-line you'll be fine. If it helps, think of yourself as Lieutenant Commander Data Science.
+If you're new to AI or search, don't worry. As long as you have some knowledge of Python and the command line you'll be fine. If it helps, think of yourself as Lieutenant Commander Data Science.
 
 ![](./images/not-amusing.gif)
 
 # Try it Out!
 
-Before going through the trouble of downloading, configuring and testing your search engine, let's get an idea of the finished product. In this case, it's exactly the same as what we're building, but with lines from South Park instead:
+Before going through the trouble of downloading, configuring and testing your search engine, let's get an idea of the finished product. In this case, it's exactly the same as what we're building, but with lines from South Park instead of Star Trek:
 
 ![](./images/jinabox-southpark.gif)
-
-## Deploy with Docker
 
 Jina has a pre-built Docker image with indexed data from South Park. You can run it with:
 
@@ -113,16 +111,14 @@ For our Star Trek example, use the following settings:
 
 Just use the defaults for all other fields.
 
-# Files and Folders
+Let's have a look at the files cookiecutter creates for us:
 
-After running `cookiecutter`, run:
-
-```
+```sh
 cd star_trek
 ls
 ```
 
-You should see a bunch of files in the `star_trek` folder that cookiecutter created:
+You should see a bunch of files:
 
 * `app.py`           - The main Python script where you initialize and pass data into your Flow 
 * `Dockerfile`       - Lets you spin up a Docker instance running your app                      
@@ -141,15 +137,9 @@ More on Flows and Pods later!
 
 In your terminal:
 
-```
+```sh
 pip install -r requirements.txt
 ```
-
-⚠️ Now we're going to get our hands dirty, and if we're going to run into trouble, this is where we'll find it.
-
-![](./images/red_alert.gif)
-
-If you hit any snags, check our **[troubleshooting](#troubleshooting)** section!
 
 ## Download Dataset
 
@@ -164,28 +154,7 @@ cd ..
 bash ./get_data.sh
 ```
 
-You should see some output like this to show it's downloading:
-
-```bash
---2020-07-29 13:57:38--  https://github.com/alexcg1/startrek-startrek_tng/raw/master/startrek_tng.csv
-Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
-Resolving github.com (github.com)... 13.237.44.5
-Connecting to github.com (github.com)|13.237.44.5|:443... connected.
-HTTP request sent, awaiting response... 302 Found
-Location: https://raw.githubusercontent.com/alexcg1/startrek-startrek_tng/master/startrek_tng.csv [following]
---2020-07-29 13:57:39--  https://raw.githubusercontent.com/alexcg1/startrek-startrek_tng/master/startrek_tng.csv
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.164.133
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.164.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 4618017 (4.4M) [text/plain]
-Saving to: ‘./star_trek/data/startrek_tng.csv’
-
-startrek_tng.csv                               100%[=================================================================================================>]   4.40M  4.47MB/s    in 1.0s    
-```
-
-## Check Data
-
-Now that `get_data.sh` has downloaded the data, let's get back into the `star_trek` directory and make sure the file has everything we want:
+Once that's finished downloading, let's get back into the `star_trek` directory and make sure our dataset has everything we want:
 
 ```shell
 cd star_trek
@@ -247,8 +216,6 @@ num_docs = os.environ.get('MAX_DOCS', 500)
 
 That should speed up our testing by a factor of 100! Once we've verified everything works we can set it back to `50000` to index more of our dataset. 
 
-## Run your Search Engine!
-
 Now that we've got the code to load our data, we're going to dive into writing our app and running our Flows! Flows are the different tasks our app performs, like indexing or searching the data.
 
 ## Indexing
@@ -267,7 +234,7 @@ Flow@133216[S]:flow is closed and all resources should be released already, curr
 
 This may take a little while the first time, since Jina needs to download the language model and tokenizer to process the data. You can think of these as the brains behind the neural network that powers the search.
 
-## Activating Search Mode
+## Searching
 
 Run:
 
@@ -285,11 +252,7 @@ Flow@85144[S]:flow is started at 0.0.0.0:65481, you can now use client to send r
 
 ℹ️  `python app.py search` doesn't pop up a search interface - for that you'll need to connect via `curl`, Jinabox, or another client.
 
-## Searching
-
-Now that the app is running in search mode, we can search from the web browser with Jinabox or from the terminal with `curl`:
-
-### Jinabox
+## Search with Jinabox
 
 ![](./images/jinabox-startrek.gif)
  
@@ -297,7 +260,7 @@ Now that the app is running in search mode, we can search from the web browser w
 2. Ensure you have the server endpoint set to `http://localhost:65481/api/search`
 3. Type a phrase into the search bar and see which Star Trek lines come up
 
-### Curl
+## Search with Curl
 
 `curl` will spit out a *lot* of information in JSON format - not just the lines you're searching for, but all sorts of metadata about the search and the lines it returns. Look for the lines starting with `"matchDoc"` to find the matches.
 
@@ -326,7 +289,7 @@ Congratulations! You've just built your very own search engine!
 
 # How Does it Actually Work?
 
-Jina has a couple of important concepts: **Flows** and **Pods**:
+For a more general overview of what neural search is and how it works, check one of [my other previous articles](https://towardsdatascience.com/what-is-neural-search-and-why-should-i-care-4a6cee6b2249). Jina itself is just one way to build a neural search engine, and has a couple of important concepts: **Flows** and **Pods**:
 
 * The Flow tells Jina *what* tasks to perform on the dataset, like indexing or searching. Each Flow is built from individual Pods.
 * The Pods comprise the Flow and tell Jina *how* to perform each task step by step, like breaking text into chunks, indexing it, and so on. They define the actual neural networks we use in neural search, namely the language models like `distilbert-base-cased`. (Which we can see in `pods/encode.yml`)
@@ -354,7 +317,7 @@ It really is that simple! Alternatively you can build Flows in `app.py` itself [
 
 No matter whether you're dealing with text, graphics, sound, or video, all datasets need to be indexed and queried, and the steps for doing each (chunking, vector encoding) are more or less the same (even if *how* you perform each step is different - that's where Pods come in!)
 
-### Indexing
+## Indexing
 
 Every Flow has well, a flow to it. Different Pods pass data along the Flow, with one Pod's output becoming another Pod's input. Look at our indexing Flow as an example:
 
@@ -362,9 +325,9 @@ Every Flow has well, a flow to it. Different Pods pass data along the Flow, with
 <img src="images/flow-index.png">
 </p>
 
-If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow will process it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
+If you look at `startrek_tng.csv` you'll see it's just one big text file. Our Flow processes it into something more suitable for Jina, which is handled by the Pods in the Flow. Each Pod performs a different task.
 
-In our indexing Flow, we use the following Pods, as defined in `flows/index.yml`:
+You can see the following Pods in `flows/index.yml`:
 
 * `crafter`       - Split the Document into Chunks                       
 * `encoder`       - Encode each Chunk into a vector                      
@@ -372,148 +335,60 @@ In our indexing Flow, we use the following Pods, as defined in `flows/index.yml`
 * `doc_idx`       - Store the Document content                           
 * `join_all`      - Join the `chunk_idx` and `doc_idx` pathways          
 
-#### Diving into `index.yml`
-
-For indexing, we define which Pods to use in `flows/index.yml`. Earlier, cookiecutter created some YAML files in `flows/` for us to start with. Let's break them down, starting with indexing:
-
-<table>
-<tr>
-<th scope="col">
-Code
-</td>
-<th scope="col">
-What it does
-</td>
-</tr>
-<tr>
-<td>
+The full file is essentially just a list of Pods with parameters and some setup at the top of the file:
 
 ```yaml
 !Flow
-  with:
+with:
   logserver: true
-```
-
-</td>
-<td>
-
-Starts the Flow and enables the logserver. We could monitor the Flow with [Jina Dashboard](https://github.com/jina-ai/dashboard) if we wanted.
-
-</td>
-</tr>
-<tr>
-<td>
-
-```yaml
 pods:
   crafter:
     yaml_path: pods/craft.yml
     read_only: true
-```
-
-</td>
-<td>
-
-Starts our Pods section, and specifies our first Pod, named `crafter` which is defined in `pod/craft.yml`. `pods/craft.yml` is another YAML file which specifies the Pod's [Executor](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#executors) and other attributes.
-
-</td>
-</tr>
-<tr>
-<td>
-
-```yaml
   encoder:
     yaml_path: pods/encode.yml
     replicas: $REPLICAS
     timeout_ready: 600000
     read_only: true
-```
-
-</td>
-<td>
-
-This code specifies:
-
-* The encoder Pod and its path
-* Replicas for parallel processing
-* Timeout limits
-* Read-only attribute, so the Pod can't adjust the input data
-
-</td>
-</tr>
-<tr>
-<td>
-
-```yaml
   chunk_idx:
     yaml_path: pods/chunk.yml
     replicas: $SHARDS
     separated_workspace: true
-```
-
-</td>
-<td>
-
-Similar to the above, but includes the `separated_workspaces` attribute in order to XXX
-
-</td>
-</tr>
-<td>
-
-```yaml
   doc_idx:
     yaml_path: pods/doc.yml
     needs: gateway
-```
-
-</td>
-<td>
-
-This Pod specifies prerequisites, namely the `gateway` Pod. We can see this in the Flow diagram above.
-
-</td>
-</tr>
-<tr>
-<td>
-
-```yaml
   join_all:
     yaml_path: _merge
     needs: [doc_idx, chunk_idx]
 ```
 
-</td>
-<td>
+Luckily, YAML is pretty human-readable. Be grateful it's not in Klingon, or even worse, XML!
 
-`join_all` looks like just another Pod - but what's with the `_merge` path? This is a built-in YAML that merges all the messages that come in from the Pods `needs`.
-
-</td>
-</tr>
-</table>
+* The first couple of lines initialize the Flow and enable the logserver (which we're not using in this tutorial).
+* After that we can see the list of Pods, with their own YAML path and extra parameters being passed to each one. 
 
 So, is that all of the Pods? Not quite! We always have another Pod working in silence - the `gateway` pod. Most of the time we can safely ignore it because it basically does all the dirty orchestration work for the Flow.
 
-With all these Pods defined in our Flow, we're all set up to index all the character lines in our dataset.
-
 ### Querying
-
-Just like indexing, the querying Flow is also defined in a YAML file. Much of it is similar to indexing:
-
-<table>
-<tr>
-<td>
 
 ![](images/flow-query.png)
 
-</td>
-<td>
+In the query Flow we've got the following Pods:
+
+* `chunk_seg`     - Segments the user query into meaningful Chunks       
+* `tf_encode`     - Encode each word of the query into a vector          
+* `chunk_idx`     - Build an index for the Chunks for fast lookup        
+* `ranker`        - Sort results list                                    
+* `doc_idx`       - Store the Document content                           
+
+Again, `flows/query.yml` gives some setup options and lists the Pods in order of use:
 
 ```yaml
 !Flow
 with:
   read_only: true  # better add this in the query time
   rest_api: true
-  port_grpc: $JINA_PORT
+  port_expose: $JINA_PORT
 pods:
   chunk_seg:
     yaml_path: pods/craft.yml
@@ -532,64 +407,34 @@ pods:
   ranker:
     yaml_path: BiMatchRanker
   doc_idx:
-    yaml_path: pods/doc.yml
+    yaml_path: pods/doc.ymlJust like indexing, the querying Flow is also defined in a YAML file. Much of it is similar to indexing:
 ```
 
-</td>
-</tr>
-</table>
-
-In indexing we have to break down the Document into Chunks and index it. For querying we do the same, regarding the query as a Document, and we can use many of the same Pods. There are a few differences though:
-
-So, in the query Flow we've got the following Pods:
-
-* `chunk_seg`     - Segments the user query into meaningful Chunks       
-* `tf_encode`     - Encode each word of the query into a vector          
-* `chunk_idx`     - Build an index for the Chunks for fast lookup        
-* `ranker`        - Sort results list                                    
-* `doc_idx`       - Store the Document content                           
-
-Since many of the Pods are the same as in indexing, they share the same YAML but perform differently based on the task at hand.
-
-### Index vs Query
-
-Now that both our Flows are ready for action, let's take a quick look at the differences between them:
-
-#### Code
-
-Compared to `index.yml`, we have some extra features in `query.yml`:
-
-* `rest_api:true`                          - Use Jina's REST API, allowing clients like jinabox and `curl` to connect 
-* `port_expose: $JINA_PORT`                - The port for connecting to Jina's API                                    
-* `polling: all`                           - Setting `polling` to `all` ensures all workers poll the message          
-* `reducing_yaml_path: _merge_topk_chunks` - Use `_merge_topk_chunks` to reduce result from all replicas              
-* `ranker:`                                - A Pod to rank results by relevance                                       
-
-#### Structures
-
-While the two Flows share (most of) the same Pods, there are some differences in structure:
+When we were indexing we broke the Document into Chunks to index it. For querying we do the same, but this time the Document is the query the user types in, not the Star Trek dataset. We'll use many of the same Pods, but there are a few differences to bear in mind. In the big picture:
 
 * Index has a two-pathway design which deals with both Document and Chunk indexing in parallel, which speeds up message passing
 * Query has a single pipeline
 
-#### Request Messages
+And digging into the `flows/query.yml`, we can see it has an extra Pod and some more parameters compared to `flows/index.yml`:
 
-In our RESTful API we set the `mode` field in the JSON body and send the request to the corresponding API:
+* `rest_api:true`                          - Use Jina's REST API, allowing clients like jinabox and `curl` to connect 
+* `port_expose: $JINA_PORT`                - The port for connecting to Jina's API                                    
+* `polling: all`                           - Setting `polling` to `all` ensures all workers poll the message          
+* `reducing_yaml_path: _merge_topk_chunks` - Use `_merge_topk_chunks` to reduce results from all replicas              
+* `ranker:`                                - Rank results by relevance                                       
+
+How does Jina know whether it should be indexing or searching? In our RESTful API we set the `mode` field in the JSON body and send the request to the corresponding API:
 
 * `api/index`  - `{"mode": "index"}`  
 * `api/search` - `{"mode": "search"}` 
-
-This is how Pods in both Flows can play different roles while sharing the same YAML files.
 
 ## Pods
 
 <img src="https://raw.githubusercontent.com/jina-ai/jina/master/docs/chapters/101/img/ILLUS8.png" width="20%" align="left">
 
-You can think of the Flow as telling Jina *what* tasks to perform on the dataset. The Pods comprise the Flow and tell Jina *how* to perform each task, and they define the actual neural networks we use in neural search, namely the machine-learning models like `distilbert-base-cased`. (Which we can see in `pods/encode.yml`)
+As we discussed above, a Flow tells Jina *what* task to perform and is comprised of Pods. And a Pod tells Jina *how* to perform that task (i.e. which is the right tool for the job?). Both Pods and Flows are defined in YAML.
 
-Jina uses YAML files to describe objects like Flows and Pods, so we can easily configure the behavior of the Pods without touching their application code.
-
-Let's start by looking at the Pods in our indexing Flow, `flows/index.yml`. Instead of the first Pod `crafter`, let's look at `encoder` which is a bit simpler:
+Let's start by looking at a Pod in our indexing Flow, `flows/index.yml`. Instead of the first Pod `crafter`, let's look at `encoder` which is a bit simpler:
 
 ```yaml
 pods:
@@ -603,7 +448,7 @@ pods:
     read_only: true
 ```
 
-The `encoder` Pod's YAML file is stored in `pods/encode.yml`:
+As we can see, the `encoder` Pod's YAML file is stored in `pods/encode.yml`:
 
 ```yaml
 !TransformerTorchEncoder
@@ -613,17 +458,17 @@ with:
   max_length: 96
 ```
 
-We first use the built-in `TransformerTorchEncoder` as the Pod's **[Executor](https://github.com/jina-ai/jina/tree/master/docs/chapters/101#executors)**. The `with` field is used to specify the parameters we pass to `TransformerTorchEncoder`.
+We first use the built-in `TransformerTorchEncoder` as the Pod's Executor. Each Pod has a different Executor based on its task, and an Executor represents an algorithm, in this case encoding. The `with` field specifies the parameters we pass to `TransformerTorchEncoder`.
 
 * `pooling_strategy` - Strategy to merge word embeddings into chunk embedding 
 * `model_name`       - Name of the model we're using                          
 * `max_length`       - Maximum length to truncate tokenized sequences to      
 
-All the other Pods follow similar practices. While a Flow differs based on task (indexing or searching), Pods differ based on *what* is being searched. If you're doing an image search, you'll follow similar steps to a text search (encode, chunk, index, etc) but the way you do each step is different to working with a text dataset. Therefore you'd use different Pods (although they'd have the same kinds of filename, so the Flow doesn't need to be changed to see them.)
+When the Pod runs, data is passed in from the previous Pod, `TransformerTorchEncoder` encodes the data, and the Pod passes the data to the next Pod in the Flow.
 
-## Troubleshooting
+# Troubleshooting
 
-### Module not found error
+## Module not found error
 
 Be sure to run `pip install -r requirements.txt` before beginning, and ensure you have lots of RAM/swap and space in your `tmp` partition (see below issues). This may take a while since there are a lot of prerequisites to install.
 
@@ -633,15 +478,15 @@ If this error keeps popping up, look into the error logs to try to find which mo
 pip install <module_name>
 ```
 
-### My Computer Hangs
+## My Computer Hangs
 
 Machine learning requires a lot of resources, and if your machine hangs this is often due to running out of memory. To fix this, try [creating a swap file](https://linuxize.com/post/how-to-add-swap-space-on-ubuntu-20-04/) if you use Linux. This isn't such an issue on macOS, since it allocates swap automatically.
 
-### `ERROR: Could not install packages due to an EnvironmentError: [Errno 28] No space left on device`
+## `ERROR: Could not install packages due to an EnvironmentError: [Errno 28] No space left on device`
 
 This is often due to your `/tmp` partition running out of space so you'll need to [increase its size](https://askubuntu.com/questions/199565/not-enough-space-on-tmp).
 
-### `command not found`
+## `command not found`
 
 For any of these errors you'll need to install the relevant software package onto your system. In Ubuntu this can be done with:
 
@@ -659,5 +504,6 @@ In this tutorial you've learned:
 * How to load and index text data from files
 * How to query data with `curl` and Jinabox
 * The nitty-gritty behind Jina Flows and Pods
+* What do if it all goes wrong
 
-Now that you have a broad understanding of how things work, you can try out some of more [example tutorials](https://github.com/jina-ai/examples) to build image or video search, or stay tuned for our next set of tutorials that build upon your Star Trek app.
+Now that you have a broad understanding of how things work, you can try out some of more [example tutorials](https://github.com/jina-ai/examples) to build image or video search, or stay tuned for our next set of tutorials that build upon your Star Trek app. Got an idea for a tutorial covering Star Trek and/or neural search? My commbadge is out of order right now, but you can leave a comment on this article for me to assimilate!
