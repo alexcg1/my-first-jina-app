@@ -1,4 +1,4 @@
-# Build a Neural Search App
+# Build Your First Neural Search App
 
 ## 👋 Introduction
 
